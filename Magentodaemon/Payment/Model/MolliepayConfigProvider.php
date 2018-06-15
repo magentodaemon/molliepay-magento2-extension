@@ -6,6 +6,7 @@ use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Framework\Escaper;
 use Magento\Payment\Helper\Data as PaymentHelper;
 use Magento\Framework\Url;
+
 class MolliepayConfigProvider implements ConfigProviderInterface
 {
     /**
@@ -22,9 +23,9 @@ class MolliepayConfigProvider implements ConfigProviderInterface
      * @var Escaper
      */
     protected $escaper;
-	
-	
-	protected $urlbuilder;
+    
+    
+    protected $urlbuilder;
 
     /**
      * @param PaymentHelper $paymentHelper
@@ -33,11 +34,11 @@ class MolliepayConfigProvider implements ConfigProviderInterface
     public function __construct(
         PaymentHelper $paymentHelper,
         Escaper $escaper,
-		Url $urlbuilder
+        Url $urlbuilder
     ) {
         $this->escaper = $escaper;
         $this->method = $paymentHelper->getMethodInstance($this->methodCode);
-		$this->urlbuilder =$urlbuilder;
+        $this->urlbuilder =$urlbuilder;
     }
 
     /**
@@ -45,15 +46,12 @@ class MolliepayConfigProvider implements ConfigProviderInterface
      */
     public function getConfig()
     {
-		
         return $this->method->isAvailable() ? [
             'payment' => [
                 'molliepay' => [
-					'redirecturl' => $this->urlbuilder->getUrl('molliepay/process/payment/', ['_secure' => true]),	
-				],
+                    'redirecturl' => $this->urlbuilder->getUrl('molliepay/process/payment/', ['_secure' => true]),
+                ],
             ],
         ] : [];
     }
-
-   
 }
